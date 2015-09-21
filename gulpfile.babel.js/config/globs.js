@@ -13,12 +13,16 @@
 var dirs = require('./dirs');
 
 var globs = {
-    src: {
-        all: [`${dirs.src}/**`]
-        , html: [`${dirs.src}/**/*.html`]
-        , scripts: {
-            local: [`${dirs.src}/root/css/**/*.js`]
-        }
+    all: [`${dirs.src}/**`]
+    , index: [`${dirs.src}/index.html`]
+    ,  scripts: {
+        local: [`${dirs.src}/root/css/**/*.js`]
+        , vendor: []
+    }
+    , styles: {
+        local: []
+        , extension: []
+        , vendor: []
     }
     , dist: {
         all: `${dirs.dist}/**/*`

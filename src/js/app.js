@@ -5,7 +5,7 @@ import 'js-data';
 import 'js-data-angular';
 import 'angular-bluebird-promises';
 
-const APP_NAME = 'smart-scheduler';
+const APP_NAME = 'lights';
 const app = angular.module(APP_NAME, [
     'ui.router'
     , 'ngMaterial'
