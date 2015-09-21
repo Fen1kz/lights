@@ -7,5 +7,10 @@ export default function (gulp, $, config, helpers) {
             .pipe(gulp.dest(`${dirs.dist}`))
     });
 
-    gulp.task('copy', ['copy:index']);
+    gulp.task('copy:assets', () => {
+        return gulp.src(globs.assets)
+            .pipe(gulp.dest(`${dirs.dist}/assets`))
+    });
+
+    gulp.task('copy', ['copy:index', 'copy:assets']);
 }

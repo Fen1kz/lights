@@ -21,7 +21,7 @@ app.config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateP
         , abstract: true
     });
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/lights-1');
 }]);
 
 require('./home/config.home');

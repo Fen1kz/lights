@@ -24,7 +24,7 @@ let Start = require('./states/state.start');
 
 function link(scope, element, attr) {
     console.log(Phaser);
-    let game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('canvas'));
+    let game = new Phaser.Game(400, 300, Phaser.AUTO, document.getElementById('canvas'));
 
     game.state.add('Start', Start);
 
