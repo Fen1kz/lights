@@ -14,7 +14,7 @@ export default function (gulp, $, config) {
         $.livereload.listen(function (err) {
             if (err) return console.log(err);
         });
-        gulp.watch([globs.src.all], ['build']).on('change', function () {
+        gulp.watch([globs.src], ['build']).on('change', function () {
             $.livereload.changed();
         });
     });

@@ -13,14 +13,14 @@
 var dirs = require('./dirs');
 
 var globs = {
-    all: [`${dirs.src}/**`]
+    src: [`${dirs.src}/**`]
     , index: [`${dirs.src}/index.html`]
     ,  scripts: {
-        local: [`${dirs.src}/root/css/**/*.js`]
-        , vendor: []
+        local: [`${dirs.src}/js/**/*.js`]
+        , vendor: [`node_modules/phaser/build/custom/phaser-no-physics.min.js`]
     }
     , styles: {
-        local: []
+        local: [`${dirs.src}/css/**/*.{css,scss}`]
         , extension: []
         , vendor: []
     }

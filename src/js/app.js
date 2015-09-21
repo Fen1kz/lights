@@ -14,19 +14,12 @@ const app = angular.module(APP_NAME, [
 ]);
 
 app.config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateProvider) => {
-    $stateProvider.state('root', {
-        url: '/'
+    $stateProvider.state('app', {
+        url: ''
         , abstract: true
     });
 
-    $stateProvider.state('chefs.list', {
-        url: '/home'
-        , views: {
-            'main@': {
-                template: 'home'
-            }
-        }
-    });
-
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/home');
 }]);
+
+require('./home/config.home');
