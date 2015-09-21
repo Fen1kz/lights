@@ -16,6 +16,8 @@
     "babel-core": "^5.8.24",
     "babelify": "^6.3.0",
     "browserify": "^11.1.0",
+    "browserify-incremental": "^3.0.1",
+    "browserify-shim": "^3.8.10",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
     "gulp-expect-file": "0.0.7",
@@ -37,10 +39,9 @@
     "angular": "^1.4.5",
     "angular-animate": "^1.4.6",
     "angular-aria": "^1.4.6",
-    "angular-material": "^0.11.0",
     "angular-bluebird-promises": "^0.5.3",
+    "angular-material": "^0.11.0",
     "angular-ui-router": "^0.2.15",
-    "axios": "^0.5.4",
     "bluebird": "^2.10.0",
     "bootstrap": "^3.3.5",
     "js-data": "^2.3.0",
@@ -48,5 +49,16 @@
     "lodash": "^3.10.1",
     "phaser": "^2.4.3",
     "seedrandom": "^2.4.2"
+  },
+  "browser": {
+    "Phaser": "./node_modules/phaser/build/phaser.js"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "Phaser": "Phaser"
   }
 }

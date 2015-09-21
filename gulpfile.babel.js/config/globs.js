@@ -17,7 +17,10 @@ var globs = {
     , index: [`${dirs.src}/index.html`]
     ,  scripts: {
         local: [`${dirs.src}/js/**/*.js`]
-        , vendor: [`node_modules/phaser/build/custom/phaser-no-physics.min.js`]
+        , vendor: [
+            //`node_modules/phaser/build/custom/phaser-no-physics.js`
+            //`node_modules/phaser/dist/phaser.js`
+        ]
     }
     , styles: {
         local: [`${dirs.src}/css/**/*.{css,scss}`]

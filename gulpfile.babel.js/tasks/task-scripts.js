@@ -1,4 +1,4 @@
-let browserify = require('browserify');
+let browserify = require('browserify-incremental');
 let babelify = require('babelify');
 let stringify = require('stringify');
 let source = require('vinyl-source-stream');
@@ -7,11 +7,12 @@ export default function (gulp, $, config) {
     let dirs = config.dirs;
     let globs = config.globs;
 
+    let bundler = browserify(`${dirs.src}/js/app.js`, {debug: true})
+        .transform(stringify(['.html']))
+        .transform(babelify);
+
     gulp.task('scripts:local', () => {
-        return browserify({debug: true})
-            .transform(stringify(['.html']))
-            .transform(babelify)
-            .require(dirs.src + '/js/app.js', {entry: true})
+        return bundler
             .bundle()
             .on('error', function handleError(err) {
                 console.error(err.toString());

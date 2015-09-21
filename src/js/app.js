@@ -5,6 +5,8 @@ import 'js-data';
 import 'js-data-angular';
 import 'angular-bluebird-promises';
 
+global.Phaser = require('Phaser');
+
 const APP_NAME = 'lights';
 const app = angular.module(APP_NAME, [
     'ui.router'
@@ -23,3 +25,4 @@ app.config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateP
 }]);
 
 require('./home/config.home');
+require('./lights-1/config.lights-1');
