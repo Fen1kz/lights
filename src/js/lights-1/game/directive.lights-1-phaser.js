@@ -21,12 +21,14 @@ function controllerFactory() {
 }
 
 let Start = require('./states/state.start');
+let Lights2 = require('./states/state.lights-2');
 
 function link(scope, element, attr) {
     console.log(Phaser);
-    let game = new Phaser.Game(400, 300, Phaser.AUTO, document.getElementById('canvas'));
+    let game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('canvas'));
 
-    game.state.add('Start', Start);
+    //game.state.add('Start', Start);
+    game.state.add('Lights2', Lights2);
 
-    game.state.start('Start');
+    game.state.start('Lights2');
 }

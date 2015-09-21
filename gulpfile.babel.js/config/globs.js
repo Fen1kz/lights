@@ -21,12 +21,13 @@ var globs = {
         , vendor: [
             //`node_modules/phaser/build/custom/phaser-no-physics.js`
             //`node_modules/phaser/dist/phaser.js`
+            `node_modules/angular-material/angular-material.min.js`
         ]
     }
     , styles: {
         local: [`${dirs.src}/css/**/*.{css,scss}`]
         , extension: []
-        , vendor: []
+        , vendor: [`node_modules/angular-material/angular-material.min.css`]
     }
     , dist: {
         all: `${dirs.dist}/**/*`

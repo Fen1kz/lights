@@ -4,7 +4,7 @@ let Sprite = require('../entities/sprite');
 //let mixinSpam = require('../mixins/mixin-spam');
 let mixinCtrlArrows = require('../mixins/mixin-controllable-arrows');
 
-class StartState extends Phaser.State {
+class Lights2State extends Phaser.State {
     constructor(...args) {
         super(...args);
     }
@@ -58,8 +58,8 @@ class StartState extends Phaser.State {
         var i, x, y;
         for (i = 0; i < NUMBER_OF_WALLS; i++) {
             x = i * this.game.width / NUMBER_OF_WALLS + 50;
-            y = this.game.rnd.integerInRange(50, this.game.height - 200);
-            this.game.add.image(x, y, 'block', 0, this.walls).scale.setTo(1, 1);
+            y = this.game.rnd.integerInRange(200, this.game.height - 200);
+            this.game.add.image(x, y, 'block', 0, this.walls).scale.setTo(2, 2);
         }
 
         //this.bitmap.context.fillStyle = 'rgb(255, 100, 100)';
@@ -299,7 +299,7 @@ class StartState extends Phaser.State {
     }
 }
 
-export default StartState;
+export default Lights2State;
 
 
 
