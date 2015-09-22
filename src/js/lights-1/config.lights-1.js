@@ -2,7 +2,8 @@ import angular from 'angular';
 
 const app = angular.module('lights');
 
-app.directive('lights1Phaser', require('./game/directive.lights-1-phaser'))
+app.service('GameService', require('./service.game'));
+app.directive('lights1Phaser', require('./game/directive.lights-1-phaser'));
 
 app.config(['$stateProvider', ($stateProvider) => {
     $stateProvider.state('app.lights1', {

@@ -16,19 +16,24 @@ function directiveFactory() {
 }
 
 function controllerFactory() {
-    return ['$document', function ($document) {
+    return ['GameService', function (GameService) {
+        this.GameService = GameService;
+
+        this.light = {
+            add: () => this.GameService.event('light.add')
+            , remove: () => this.GameService.event('light.remove')
+            , rays: () => this.GameService.event('light.rays')
+        };
+        this.box = {
+            add: () => this.GameService.event('box.add')
+            , remove: () => this.GameService.event('box.remove')
+        };
     }];
 }
 
-let Start = require('./states/state.start');
-let Lights2 = require('./states/state.lights-2');
-
-function link(scope, element, attr) {
-    console.log(Phaser);
-    let game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('canvas'));
-
-    //game.state.add('Start', Start);
-    game.state.add('Lights2', Lights2);
-
-    game.state.start('Lights2');
+function link(scope, element, attr, ctrl) {
+    let GameService = ctrl.GameService;
+    let game = new Phaser.Game(600, 300, Phaser.AUTO, document.getElementById('canvas'));
+    console.log(game);
+    GameService.init(scope, game);
 }

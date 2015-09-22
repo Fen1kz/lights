@@ -1,5 +1,6 @@
 //let Phaser = require('phaser/build/custom/phaser-no-physics.min.js');
 
+let _ = require('lodash');
 let Sprite = require('../entities/sprite');
 //let mixinSpam = require('../mixins/mixin-spam');
 let mixinCtrlArrows = require('../mixins/mixin-controllable-arrows');
@@ -19,15 +20,23 @@ class Lights2State extends Phaser.State {
         this.game.stage.backgroundColor = 0x4488cc;
 
         // Add the light
-        this.light = new Sprite(this.game, this.game.width / 2, this.game.height / 2, 'light');
+        this.game.arrays.lights = [];
+        this.game.events['light.add'].add(() => {
+            let light = new Sprite(this.game, this.game.width / 2, this.game.height / 2, 'light');
 
-        //this.light.addMixin(mixinCtrlArrows);
+            //  Input Enable the sprites
+            light.inputEnabled = true;
+            //  Allow dragging - the 'true' parameter will make the sprite snap to the center
+            light.input.enableDrag(true);
+            light.input.useHandCursor = true;
 
-        //  Input Enable the sprites
-        this.light.inputEnabled = true;
 
-        //  Allow dragging - the 'true' parameter will make the sprite snap to the center
-        this.light.input.enableDrag(true);
+            this.light = light;
+            this.game.arrays.lights.push(light);
+        });
+        this.game.events['light.add'].dispatch();
+
+        this.game.events['light.remove'].add(() => this.game.arrays.lights.shift().destroy());
 
         // Create a bitmap texture for drawing light cones
         this.bitmap = this.game.add.bitmapData(this.game.width, this.game.height);
@@ -50,20 +59,23 @@ class Lights2State extends Phaser.State {
         //this.rayBitmapImage.visible = false;
 
         // Setup function for hiding or showing rays
-        this.game.input.onTap.add(() => this.rayBitmapImage.visible = !this.rayBitmapImage.visible);
+        this.game.events['light.rays'].add(() => this.rayBitmapImage.visible = !this.rayBitmapImage.visible);
 
         // Build some walls. These will block line of sight.
-        var NUMBER_OF_WALLS = 4;
+        let NUMBER_OF_WALLS = 4;
         this.walls = this.game.add.group();
-        var i, x, y;
-        for (i = 0; i < NUMBER_OF_WALLS; i++) {
-            x = i * this.game.width / NUMBER_OF_WALLS + 50;
-            y = this.game.rnd.integerInRange(200, this.game.height - 200);
-            this.game.add.image(x, y, 'block', 0, this.walls).scale.setTo(2, 2);
-        }
+        this.game.events['box.add'].add((i) => {
+            let x = i * this.game.width / NUMBER_OF_WALLS + 50;
+            let y = this.game.rnd.integerInRange(50, this.game.height - 50);
+            let box = this.game.add.image(x, y, 'block', 0, this.walls);
+            box.scale.setTo(1.0, 1.0);
+            box.inputEnabled = true;
+            box.input.enableDrag(true);
+            box.input.useHandCursor = true;
+        });
+        this.game.events['box.remove'].add(() => this.walls.removeChildAt(this.walls.length - 1));
 
-        //this.bitmap.context.fillStyle = 'rgb(255, 100, 100)';
-        //this.bitmap.context.fillRect(0, 0, this.game.width, this.game.height);
+        _.range(NUMBER_OF_WALLS).forEach((i) => this.game.events['box.add'].dispatch(i));
     }
 
     update() {

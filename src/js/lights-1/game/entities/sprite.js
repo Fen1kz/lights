@@ -16,6 +16,11 @@ class Sprite extends Phaser.Sprite {
     update() {
         this.mixins.filter(mixin => mixin.update).forEach(mixin => mixin.update());
     }
+
+    destroy(...args) {
+        super.destroy(...args);
+        this.mixins = null;
+    }
 }
 
 export default Sprite;
