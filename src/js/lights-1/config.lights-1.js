@@ -1,12 +1,10 @@
 import angular from 'angular';
 
 const app = angular.module('lights');
-
-app.service('GameService', require('./service.game'));
 app.directive('lights1Phaser', require('./game/directive.lights-1-phaser'));
 
 app.config(['$stateProvider', ($stateProvider) => {
-    $stateProvider.state('app.lights1', {
+    $stateProvider.state('app.lights-1', {
         url: '/lights-1'
         , views: {
             'main@': {

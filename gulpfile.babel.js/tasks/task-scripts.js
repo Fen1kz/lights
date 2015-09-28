@@ -8,7 +8,7 @@ export default function (gulp, $, config) {
     let globs = config.globs;
 
     let bundler = browserify(`${dirs.src}/js/app.js`, {debug: true})
-        .transform(stringify(['.html']))
+        .transform(stringify(['.html', '.glsl', '.frag']))
         .transform(babelify);
 
     gulp.task('scripts:local', () => {

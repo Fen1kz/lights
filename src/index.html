@@ -11,6 +11,9 @@
     <script src="/js/vendor.min.js"></script>
 </head>
 <body>
-<div ui-view="main"></div>
+<md-content>
+    <md-toolbar><div class="md-toolbar-tools" ui-view="toolbar"></div></md-toolbar>
+    <div ui-view="main"></div>
+</md-content>
 </body>
 </html>
