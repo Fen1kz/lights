@@ -23,9 +23,20 @@ uniform vec2      mouse;       // mouse pixel coords. xy: current (if MLB down),
 uniform sampler2D uSampler;
 varying vec2 vTextureCoord;
 
+uniform float testColor;
+
 float PI = 3.1415926535897932384626433832795;
 const float maxLight = 200.0;
 
+void main() {
+    vec4 color = texture2D(uSampler, vTextureCoord);
+
+    color.r = testColor;
+
+    gl_FragColor = color;
+}
+
+/*
 void main() {
     const float r_inner=0.0;
     const float r_outer=1.0;
@@ -73,7 +84,7 @@ void main() {
     //vec4 color = texture2D(uSampler, vTextureCoord);
 
     gl_FragColor = color;
-}
+}*/
 
 
 /*
