@@ -25,15 +25,42 @@ varying vec2 vTextureCoord;
 
 uniform float testColor;
 
-float PI = 3.1415926535897932384626433832795;
-const float maxLight = 200.0;
+const float THRESHOLD = 0.75;
+const float PI = 3.1415926535897932384626433832795;
+const float resY = 256.0;
 
-void main() {
-    vec4 color = texture2D(uSampler, vTextureCoord);
+void main(void) {
+  vec2 position = floor(resolution * vTextureCoord);
+  float distance = 1.0;
+//  gl_FragColor = vec4(0.0);
+//  gl_FragColor.a = 1.0;
 
-    color.r = testColor;
+  for (float y = 0.0; y < resY; y += 1.0) {
+        //rectangular to polar filter
+        vec2 norm = vec2(vTextureCoord.x, y / resolution.y) * 2.0 - 1.0;
+        float theta = PI*1.5 + norm.x * PI;
+        float r = (1.0 + norm.y) * 0.5;
+//
+        //coord which we will sample from occlude map
+        vec2 coord = vec2(-r * sin(theta), -r * cos(theta)) / 2.0 + 0.5;
 
-    gl_FragColor = color;
+        //sample the occlusion map
+        vec4 data = texture2D(uSampler, coord);
+
+        //the current distance is how far from the top we've come
+        float dst = y/resolution.y;
+
+//        gl_FragColor = texture2D(uSampler, vec2(dst, r));
+        //if we've hit an opaque fragment (occluder), then get new distance
+        //if the new distance is below the current, then we'll use that for our ray
+        float caster = data.a;
+        if (caster > THRESHOLD) {
+            distance = min(distance, dst);
+//            return;
+            //NOTE: we could probably use "break" or "return" here
+        }
+  }
+  gl_FragColor = vec4(vec3(distance), 1.0);
 }
 
 /*

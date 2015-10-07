@@ -26,11 +26,8 @@ class Lights2State extends Phaser.State {
         this.gradientShader = new Phaser.Filter(this.game, null, require('../shaders/gradient.frag'));
 
         this.lightShader = new Phaser.Filter(this.game, {
-            iResolution: {type: '2f', value: [this.game.width, this.game.height]}
-            , testColor: {type: '1f', value: 1.5}
-            , lights: {type: '4f', value: [50, 50, 20, 10]}
         }, require('../shaders/lights.frag'));
-        this.lightShader.setResolution(this.game.width, this.game.height);
+        this.lightShader.setResolution(256, 256);
 
         this.l1 = new Phaser.Filter(this.game, {
             lait: {type: '3f', value: [100.0, 100.0, 15.0]}
@@ -38,15 +35,17 @@ class Lights2State extends Phaser.State {
         }, require('../shaders/l1.frag'));
 
         // floor
-        //this.floor = new Texture(this.game, require('./textures/floor'));
+        this.floor = new Texture(this.game, require('./textures/floor'));
 
         this.lights = new Texture(this.game, require('./textures/lights'));
 
-        this.obstacles = new Texture(this.game, require('./textures/obstacles'));
+        //this.obstacles = new Texture(this.game, require('./textures/obstacles'));
 
-        this.lights.image.filters = [this.l1];
+        this.lights.image.filters = [this.lightShader];
 
-        //asd
+        //this.floor.draw(require('./textures/test'));
+
+        //this.floor.image.filters = [this.lightShader];
 
 
         ////

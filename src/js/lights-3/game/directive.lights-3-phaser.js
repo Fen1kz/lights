@@ -5,7 +5,7 @@ function directiveFactory() {
         return {
             restrict: 'E'
             , scope: {}
-            , template: require('./directive.lights-2-phaser.html')
+            , template: require('./directive.lights-3-phaser.html')
             , link: link
             , controller: controllerFactory()
             , controllerAs: 'phaserCtrl'
@@ -23,10 +23,9 @@ function controllerFactory() {
 
 function link(scope, element, attr, ctrl) {
     let GameService = ctrl.GameService;
-    let game = new Phaser.Game(600, 300, Phaser.WEBGL, document.getElementById('canvas'));
-    window.game = game;
+    let game = new Phaser.Game(600, 300, Phaser.AUTO, document.getElementById('canvas'));
 
-    let Lights2 = require('./states/state.lights-2.js');
+    let Lights3 = require('./states/state.lights-3.js');
 
     game.events = {
         'light.add': new Phaser.Signal()
@@ -48,9 +47,9 @@ function link(scope, element, attr, ctrl) {
 
     GameService.init(scope, game);
 
-    game.state.add('Lights2', Lights2);
+    game.state.add('Lights3', Lights3);
 
-    game.state.start('Lights2');
+    game.state.start('Lights3');
 
     console.log(game);
 }
