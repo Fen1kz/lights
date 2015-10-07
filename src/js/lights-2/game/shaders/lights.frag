@@ -1,20 +1,3 @@
-/**
-
-	Hi all,
-
-	This is just my playground for a bunch of 2D stuff:
-
-	Some distance functions and blend functions
-	Cone marched 2D Soft shadows
-	Use the mouse to control the 3rd light
-
-*/
-
-
-
-//////////////////////////////////////
-// Combine distance field functions //
-//////////////////////////////////////
 precision highp float;
 
 uniform float     time;        // shader playback time (in seconds)
@@ -32,9 +15,9 @@ void main(void) {
   vec4 rawNormal = texture2D(uSampler, vTextureCoord);
 
   // if the alpha channel is zero, then don't do lighting here
-//  if(rawNormal.a == 0.0) {
-//    gl_FragColor = vec4(0, 0, 0, 0);
-//  } else {
+  if(rawNormal.a == 0.0) {
+    gl_FragColor = vec4(0, 0, 0, 0);
+  } else {
 
     // translate from 0 to 1 to -.5 to .5
     rawNormal -= 0.5;
@@ -47,7 +30,7 @@ void main(void) {
 
     // and drop the pixel in
     gl_FragColor = lightColor * lightWeight;
-//  }
+  }
 //    gl_FragColor = lightColor;
 }
 

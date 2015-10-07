@@ -34,6 +34,7 @@ function link(scope, element, attr, ctrl) {
         , 'light.rays': new Phaser.Signal()
         , 'box.add': new Phaser.Signal()
         , 'box.remove': new Phaser.Signal()
+        , 'slider.change': new Phaser.Signal()
     };
 
     ctrl.light = {
@@ -45,6 +46,10 @@ function link(scope, element, attr, ctrl) {
         add: () => GameService.event('box.add')
         , remove: () => GameService.event('box.remove')
     };
+
+    scope.$watch(() => ctrl.slider, () => {
+        GameService.event('slider.change', ctrl.slider);
+    });
 
     GameService.init(scope, game);
 

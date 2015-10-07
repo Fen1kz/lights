@@ -21,6 +21,11 @@ class Lights2State extends Phaser.State {
         this.game.load.image("mansionNormals", "/assets/gfx/mansionNormals.png");
 
         this.grayShader = new Phaser.Filter(this.game, null, require('../shaders/bacteria.frag'));
+
+        this.height = 1.0;
+        this.game.events['slider.change'].add((value) => {
+            this.height = value;
+        });
     }
 
     create() {
@@ -31,27 +36,42 @@ class Lights2State extends Phaser.State {
             , lightColor: {type: '4fv', value: [.1,.1,.1,1.0]}
         }, require('../shaders/lights.frag'));
 
+        this.shadowShader = new Phaser.Filter(this.game, {
+            uLightDirection: {type: '3fv', value: [.5,.5,1.0]}
+            , uLightColor: {type: '4fv', value: [.1,.1,.1,1.0]}
+            , uTexStep: {type: '1f', value: 0.1}
+        }, require('../shaders/shadow2.frag'));
+
         // img:
+        this.floor = new Texture(this.game, require('./textures/floor'));
+
         let mansionDiffuse = new Phaser.RenderTexture(this.game, 144, 96, 'mansionDiffuse');
         mansionDiffuse.renderRawXY(new Phaser.Image(this.game, 0, 0, "mansionNormals"), 0, 0);
 
         let mansionNormal = new Phaser.RenderTexture(this.game, 144, 96, 'mansionNormal');
-
         mansionNormal.renderRawXY(new Phaser.Image(this.game, 0, 0, "mansionNormals"), -144, 0);
 
-        //mansionDiffuse.shader = this.grayShader;
-        //mansionDiffuse.shaders = [this.grayShader];
-        //mansionDiffuse.filter = this.grayShader;
-        //mansionDiffuse.filters = [this.grayShader];
+        let mansionShadow = new Phaser.RenderTexture(this.game, 512, 512, 'mansionShadow');
+        //mansionShadow.renderXY(new Phaser.Image(this.game, 144, 96, "mansionNormals"), -144, 0);
+
+        let mansionShadowFill = this.game.add.bitmapData(this.game.width, this.game.height);
+        //mansionShadowFill.context.fillStyle = 'rgb(255, 255, 255)';
+        //mansionShadowFill.context.fillRect(0, 0, this.game.width, this.game.height);
+
+        mansionShadowFill.copyRect("mansionNormals", new Phaser.Rectangle(144, 0, 144, 96), 144, 96);
+
+        let imgMansionShadow = this.game.add.image(0, 0, mansionShadowFill);
+
+        imgMansionShadow.filters = [this.shadowShader];
+        imgMansionShadow.blendMode = Phaser.blendModes.DARKEN;
 
         let imgMansion = this.game.add.image(144, 96, mansionDiffuse);
 
         let imgMansionNormal = this.game.add.image(144, 96, mansionNormal);
-
+        //
         //imgMansion.filters = [this.lightShader];
         imgMansionNormal.filters = [this.lightShader];
         imgMansionNormal.blendMode = Phaser.blendModes.DARKEN;
-
 
         //this.gradientShader = new Phaser.Filter(this.game, null, require('../shaders/gradient.frag'));
         //
@@ -79,14 +99,19 @@ class Lights2State extends Phaser.State {
             , y: this.game.input.activePointer.y
         };
 
-        pointer.x = 2 - pointer.x / 144;
-        pointer.y = 2 - pointer.y / 96;
+        pointer.x = 2 + 1 - (pointer.x / 144 * 2);
+        pointer.y = 2 + 1 - (pointer.y / 96 * 2);
 
-        //this.game.debug.text(`${pointer.x}:${pointer.y}`, 200, 200);
+        this.game.debug.text(`${Math.floor(pointer.x*100)/100}:${Math.floor(pointer.y*100)/100}`, 0, this.game.height - 14);
 
         this.lightShader.uniforms.lightDirection.value[0] = pointer.x;
         this.lightShader.uniforms.lightDirection.value[1] = pointer.y;
         this.lightShader.update();
+
+        this.shadowShader.uniforms.uLightDirection.value[0] = -pointer.x;
+        this.shadowShader.uniforms.uLightDirection.value[1] = pointer.y;
+        this.shadowShader.uniforms.uLightDirection.value[2] = this.height;
+        this.shadowShader.update();
     }
 }
 

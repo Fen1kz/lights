@@ -16,4 +16,15 @@
             <md-button class="md-raised md-warn" ng-click="phaserCtrl.box.remove()">-</md-button>
         </md-card-content>
     </md-card>
+    <md-card>
+        <md-card-content>
+            <h3 class="label">Slider</h3>
+            <md-slider flex min="0" max="10" step=".2" ng-model="phaserCtrl.slider">
+            </md-slider>
+            <div layout layout-align="center center">
+                <input flex type="number" ng-model="phaserCtrl.slider" aria-label="red" aria-controls="red-slider">
+            </div>
+        </md-card-content>
+    </md-card>
+
 </div>
