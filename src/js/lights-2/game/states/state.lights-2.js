@@ -39,6 +39,7 @@ class Lights2State extends Phaser.State {
         this.shadowShader = new Phaser.Filter(this.game, {
             uLightDirection: {type: '3fv', value: [.5,.5,1.0]}
             , uLightColor: {type: '4fv', value: [.1,.1,.1,1.0]}
+            , uLightPosition: {type: '3fv', value: [.1,.1,.1]}
             , uTexStep: {type: '1f', value: 0.1}
         }, require('../shaders/shadow2.frag'));
 
@@ -99,10 +100,16 @@ class Lights2State extends Phaser.State {
             , y: this.game.input.activePointer.y
         };
 
+        let pointer2 = {
+            x: this.game.input.activePointer.x
+            , y: this.game.input.activePointer.y
+        };
+
         pointer.x = 2 + 1 - (pointer.x / 144 * 2);
         pointer.y = 2 + 1 - (pointer.y / 96 * 2);
 
-        this.game.debug.text(`${Math.floor(pointer.x*100)/100}:${Math.floor(pointer.y*100)/100}`, 0, this.game.height - 14);
+        this.game.debug.text(`${Math.floor(pointer.x*100)/100}:${Math.floor(pointer.y*100)/100}`, 0, this.game.height - 20);
+        this.game.debug.text(`${Math.floor(pointer2.x/256*100)/100}:${Math.floor(pointer2.y/256*100)/100}`, 0, this.game.height - 5);
 
         this.lightShader.uniforms.lightDirection.value[0] = pointer.x;
         this.lightShader.uniforms.lightDirection.value[1] = pointer.y;
@@ -111,6 +118,10 @@ class Lights2State extends Phaser.State {
         this.shadowShader.uniforms.uLightDirection.value[0] = -pointer.x;
         this.shadowShader.uniforms.uLightDirection.value[1] = pointer.y;
         this.shadowShader.uniforms.uLightDirection.value[2] = this.height;
+
+        this.shadowShader.uniforms.uLightPosition.value[0] = pointer2.x;
+        this.shadowShader.uniforms.uLightPosition.value[1] = pointer2.y;
+        this.shadowShader.uniforms.uLightPosition.value[2] = this.height;
         this.shadowShader.update();
     }
 }
