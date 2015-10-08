@@ -23,6 +23,7 @@ function controllerFactory() {
 
 function link(scope, element, attr, ctrl) {
     let GameService = ctrl.GameService;
+
     let game = new Phaser.Game(600, 300, Phaser.WEBGL, document.getElementById('canvas'));
     window.game = game;
 

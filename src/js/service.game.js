@@ -1,11 +1,12 @@
-service.$inject = [];
+service.$inject = ['$window'];
 
 
-function service() {
+function service($window) {
     return {
         init: ($scope, game) => {
             this.$scope = $scope;
             this.game = game;
+            this.game.config.baseUrl = $window.location.pathname;
             $scope.$on('$destroy', () => {
                 this.game.arrays = null;
                 this.game.destroy();

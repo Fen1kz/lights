@@ -12,6 +12,7 @@ class Lights2State extends Phaser.State {
     }
 
     preload() {
+        this.game.load.baseURL = (this.game.config.baseUrl != "/") ? this.game.config.baseUrl : "";
         this.game.load.image("block", "/assets/gfx/block.png");
         this.game.load.image("light", "/assets/gfx/light.png");
         this.Blur = this.game.add.filter('Blur');
