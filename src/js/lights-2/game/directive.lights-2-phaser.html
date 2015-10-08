@@ -1,21 +1,10 @@
-<div>test:</div>
+<div>
+    <h3 class="label">Shadertype</h3>
+    <md-button class="md-raised" ng-click="phaserCtrl.sun()">Sun</md-button>
+    <md-button class="md-raised" ng-click="phaserCtrl.shadow()">Shadow</md-button>
+</div>
 <div id="canvas"></div>
 <div layout="row">
-    <md-card>
-        <md-card-content>
-            <h3 class="label">Light</h3>
-            <md-button class="md-raised md-primary" ng-click="phaserCtrl.light.add()">+</md-button>
-            <md-button class="md-raised md-warn" ng-click="phaserCtrl.light.remove()">-</md-button>
-            <md-button class="md-raised" ng-click="phaserCtrl.light.rays()">rays</md-button>
-        </md-card-content>
-    </md-card>
-    <md-card>
-        <md-card-content>
-            <h3 class="label">Box</h3>
-            <md-button class="md-raised md-primary" ng-click="phaserCtrl.box.add()">+</md-button>
-            <md-button class="md-raised md-warn" ng-click="phaserCtrl.box.remove()">-</md-button>
-        </md-card-content>
-    </md-card>
     <md-card>
         <md-card-content>
             <h3 class="label">Slider</h3>
@@ -26,5 +15,4 @@
             </div>
         </md-card-content>
     </md-card>
-
 </div>

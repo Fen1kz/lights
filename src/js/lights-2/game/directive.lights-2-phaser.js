@@ -28,24 +28,12 @@ function link(scope, element, attr, ctrl) {
 
     let Lights2 = require('./states/state.lights-2.js');
 
-    game.events = {
-        'light.add': new Phaser.Signal()
-        , 'light.remove': new Phaser.Signal()
-        , 'light.rays': new Phaser.Signal()
-        , 'box.add': new Phaser.Signal()
-        , 'box.remove': new Phaser.Signal()
-        , 'slider.change': new Phaser.Signal()
-    };
+    game.events = {};
+    ['slider.change', 'sun', 'shadow']
+        .forEach((s) => game.events[s] = new Phaser.Signal());
 
-    ctrl.light = {
-        add: () => GameService.event('light.add')
-        , remove: () => GameService.event('light.remove')
-        , rays: () => GameService.event('light.rays')
-    };
-    ctrl.box = {
-        add: () => GameService.event('box.add')
-        , remove: () => GameService.event('box.remove')
-    };
+    ctrl.sun = () => GameService.event('sun');
+    ctrl.shadow = () => GameService.event('shadow');
 
     scope.$watch(() => ctrl.slider, () => {
         GameService.event('slider.change', ctrl.slider);

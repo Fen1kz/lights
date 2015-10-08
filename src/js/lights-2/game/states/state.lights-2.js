@@ -41,7 +41,16 @@ class Lights2State extends Phaser.State {
             , uLightColor: {type: '4fv', value: [.1,.1,.1,1.0]}
             , uLightPosition: {type: '3fv', value: [.1,.1,.1]}
             , uTexStep: {type: '1f', value: 0.1}
+        }, require('../shaders/shadow.frag'));
+        this.shadowShader.setResolution(this.game.width, this.game.height);
+
+        this.shadow2Shader = new Phaser.Filter(this.game, {
+            uLightDirection: {type: '3fv', value: [.5,.5,1.0]}
+            , uLightColor: {type: '4fv', value: [.1,.1,.1,1.0]}
+            , uLightPosition: {type: '3fv', value: [.1,.1,.1]}
+            , uTexStep: {type: '1f', value: 0.1}
         }, require('../shaders/shadow2.frag'));
+        this.shadow2Shader.setResolution(this.game.width, this.game.height);
 
         // img:
         this.floor = new Texture(this.game, require('./textures/floor'));
@@ -67,7 +76,7 @@ class Lights2State extends Phaser.State {
         imgMansionShadow.blendMode = Phaser.blendModes.DARKEN;
 
         let imgMansion = this.game.add.image(144, 96, mansionDiffuse);
-
+        //
         let imgMansionNormal = this.game.add.image(144, 96, mansionNormal);
         //
         //imgMansion.filters = [this.lightShader];
@@ -92,6 +101,12 @@ class Lights2State extends Phaser.State {
         //
         //this.lights.image.filters = [this.lightShader];
 
+        this.game.events['sun'].add(() => {
+            imgMansionShadow.filters = [this.shadowShader];
+        });
+        this.game.events['shadow'].add(() => {
+            imgMansionShadow.filters = [this.shadow2Shader];
+        });
     }
 
     update() {
@@ -123,6 +138,15 @@ class Lights2State extends Phaser.State {
         this.shadowShader.uniforms.uLightPosition.value[1] = pointer2.y;
         this.shadowShader.uniforms.uLightPosition.value[2] = this.height;
         this.shadowShader.update();
+
+        this.shadow2Shader.uniforms.uLightDirection.value[0] = -pointer.x;
+        this.shadow2Shader.uniforms.uLightDirection.value[1] = pointer.y;
+        this.shadow2Shader.uniforms.uLightDirection.value[2] = this.height;
+
+        this.shadow2Shader.uniforms.uLightPosition.value[0] = pointer2.x;
+        this.shadow2Shader.uniforms.uLightPosition.value[1] = pointer2.y;
+        this.shadow2Shader.uniforms.uLightPosition.value[2] = this.height;
+        this.shadow2Shader.update();
     }
 }
 
