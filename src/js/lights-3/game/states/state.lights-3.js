@@ -77,8 +77,12 @@ class Lights2State extends Phaser.State {
         //imgMansionShadow.blendMode = Phaser.blendModes.DARKEN;
         //
         let imgMansion = this.game.make.image(144, 96, mansionDiffuse);
-        //this.renderGroup.add(this.floor.image);
-        this.renderGroup.add(imgMansion);
+        this.renderGroup.add(this.floor.image);
+        //this.renderGroup.add(imgMansion);
+
+        this.renderGroup.add(new Texture(this.game, require('./textures/circle')('255,0,0', 250, 150)).image);
+        this.renderGroup.add(new Texture(this.game, require('./textures/circle')('0,255,0', 150, 250)).image);
+        this.renderGroup.add(new Texture(this.game, require('./textures/circle')('0,0,255', 250, 350)).image);
         ////
         //let imgMansionNormal = this.game.add.image(144, 96, mansionNormal);
         //
@@ -125,6 +129,10 @@ class Lights2State extends Phaser.State {
         //this.shadowShader.uniforms.uLightPosition.value[1] = pointer2.y;
         //this.shadowShader.uniforms.uLightPosition.value[2] = this.height;
         //this.shadowShader.update();
+    }
+
+    render() {
+        //this.light.render();
     }
 }
 

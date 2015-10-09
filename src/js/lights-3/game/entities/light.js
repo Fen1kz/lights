@@ -4,15 +4,22 @@ class Light extends Sprite {
     constructor(...args) {
         super(...args);
 
-        this.SIZE = 255;
+        this.SIZE = 256;
 
         this.grayShader = new Phaser.Filter(this.game, null, require('../shaders/gray.frag'));
 
+        this.shadowTexureShader = new Phaser.Filter(this.game, {
+            lightColor: {type: '4fv', value: [1,1,1,1.0]}
+            , gameResolution: { type: '2fv', value: [this.game.width, this.game.height] }
+            , shaderResolution: { type: '2fv', value: [this.SIZE, this.SIZE] }
+            , iChannel0: { type: 'sampler2D', value: [] }
+        }, require('../shaders/shadow.frag'));
+        this.shadowTexureShader.setResolution(this.SIZE, this.SIZE);
+
         this.shadowCastShader = new Phaser.Filter(this.game, {
             lightColor: {type: '4fv', value: [1,1,1,1.0]}
-            , lightsCount: {type: '1f', value: 1}
-            , lightDistance: {type: '1f', value: 1}
-            , lightPos: {type: '2fv', value: [.5,.5]}
+            , gameResolution: { type: '2fv', value: [this.game.width, this.game.height] }
+            , shaderResolution: { type: '2fv', value: [this.SIZE, this.SIZE] }
         }, require('../shaders/cast-shadow.frag'));
         this.shadowCastShader.setResolution(this.SIZE, this.SIZE);
 
@@ -20,8 +27,8 @@ class Light extends Sprite {
 
         //this.renderTexure.renderRawXY(this.game.stage, 0,0);
 
-        //this.lighting = new Phaser.Image(this.game, -this.SIZE / 2, -this.SIZE / 2, this.renderTexure);
-        this.lighting = new Phaser.Image(this.game, 0, 0, this.renderTexure);
+        this.lighting = new Phaser.Image(this.game, -this.SIZE / 2, -this.SIZE / 2, this.renderTexure);
+        //this.lighting = new Phaser.Image(this.game, 0, 0, this.renderTexure);
 
 
         this.addChild(this.lighting);
@@ -36,13 +43,6 @@ class Light extends Sprite {
         //this.addChild(this.image);
         //this.image.filters = [this.shadowTexureShader];
 
-        this.shadowTexureShader = new Phaser.Filter(this.game, {
-            lightColor: {type: '4fv', value: [1,1,1,1.0]}
-            , iChannel0Res: { type: '2f', value: {x:this.SIZE,y:this.SIZE} }
-            , iChannel0: { type: 'sampler2D', value: this.renderTexure.texture }
-        }, require('../shaders/shadow.frag'));
-        this.shadowTexureShader.setResolution(this.SIZE, this.SIZE);
-
         this.lighting.filters = [this.shadowTexureShader];
         //this.lighting.filters = [this.shadowTexureShader, this.shadowCastShader];
     }
@@ -50,23 +50,33 @@ class Light extends Sprite {
     update() {
         super.update();
 
-        this.renderTexure.render(this.image);
-
-        this.shadowTexureShader.update();
+        //this.renderTexure.render(this.image);
 
         let renderGroup = this.game.state.getCurrentState().renderGroup;
+
+        this.renderTexure.renderRawXY(renderGroup, -this.x + this.SIZE / 2, -this.y + this.SIZE / 2, true);
+        //this.renderTexure.resize(this.SIZE, this.SIZE, true);
         //this.bitmapData.copyRect(renderGroup, new Phaser.Rectangle(0,0,256,256),0,0);
 
         //this.bitmapData
         //this.image.tint = 0xff0000;
         //this.renderTexure.renderRawXY(renderGroup, this.x, this.y, true);
-        //this.renderTexure.renderRawXY(renderGroup, -this.x + this.SIZE / 2, -this.y + this.SIZE / 2, true);
+
+        this.shadowTexureShader.uniforms.iChannel0.value = this.renderTexure.textureBuffer.texture;
+        this.shadowTexureShader.update();
+
+        //debugger;
         //this.lighting.tint = 0xFF0000;
 
         this.game.debug.text('haha', 0, this.game.height - 10);
     }
 
     render() {
+        //let renderGroup = this.game.state.getCurrentState().renderGroup;
+        //this.renderTexure.renderRawXY(renderGroup, -this.x + this.SIZE / 2, -this.y + this.SIZE / 2, true);
+        //this.shadowTexureShader.uniforms.iChannel0.value = this.renderTexure.textureBuffer.texture;
+        //this.shadowTexureShader.update();
+        //this.game.debug.text('haha', 0, this.game.height - 10);
     }
 }
 
