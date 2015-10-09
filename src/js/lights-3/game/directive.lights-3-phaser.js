@@ -23,7 +23,7 @@ function controllerFactory() {
 
 function link(scope, element, attr, ctrl) {
     let GameService = ctrl.GameService;
-    let game = new Phaser.Game(600, 300, Phaser.AUTO, document.getElementById('canvas'));
+    let game = new Phaser.Game(512, 512, Phaser.AUTO, document.getElementById('canvas'));
 
     let Lights3 = require('./states/state.lights-3.js');
 

@@ -77,7 +77,7 @@ class Lights2State extends Phaser.State {
         //imgMansionShadow.blendMode = Phaser.blendModes.DARKEN;
         //
         let imgMansion = this.game.make.image(144, 96, mansionDiffuse);
-        this.renderGroup.add(this.floor.image);
+        //this.renderGroup.add(this.floor.image);
         this.renderGroup.add(imgMansion);
         ////
         //let imgMansionNormal = this.game.add.image(144, 96, mansionNormal);
