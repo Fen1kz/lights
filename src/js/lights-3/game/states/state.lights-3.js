@@ -57,7 +57,6 @@ class Lights2State extends Phaser.State {
 
         this.floor = new Texture(this.game, require('./textures/floor'));
 
-        this.renderGroup = this.game.add.group();
 
         let mansionDiffuse = new Phaser.RenderTexture(this.game, 144, 96, 'mansionDiffuse');
         mansionDiffuse.renderRawXY(new Phaser.Image(this.game, 0, 0, "mansionNormals"), 0, 0);
@@ -77,8 +76,12 @@ class Lights2State extends Phaser.State {
         //imgMansionShadow.blendMode = Phaser.blendModes.DARKEN;
         //
         let imgMansion = this.game.make.image(144, 96, mansionDiffuse);
-        this.renderGroup.add(this.floor.image);
-        //this.renderGroup.add(imgMansion);
+        //this.renderGroup.add(this.floor.image);
+        this.light = new Light(this.game);
+
+        this.renderGroup = this.game.add.group();
+
+        this.renderGroup.add(imgMansion);
 
         this.renderGroup.add(new Texture(this.game, require('./textures/circle')('255,0,0', 250, 150)).image);
         this.renderGroup.add(new Texture(this.game, require('./textures/circle')('0,255,0', 150, 250)).image);
@@ -95,7 +98,6 @@ class Lights2State extends Phaser.State {
         //this.game.events['shadow'].add(() => {
         //    imgMansionShadow.filters = [this.shadow2Shader];
         //});
-        this.light = new Light(this.game);
     }
 
     update() {

@@ -5,23 +5,35 @@ class Light extends Sprite {
         super(...args);
 
         this.SIZE = 256;
+        //this.SHADER_SIZE = this.SIZE * 2;
+        this.SHADER_SIZE = this.SIZE;
 
         this.grayShader = new Phaser.Filter(this.game, null, require('../shaders/gray.frag'));
 
         this.shadowTexureShader = new Phaser.Filter(this.game, {
             lightColor: {type: '4fv', value: [1,1,1,1.0]}
             , gameResolution: { type: '2fv', value: [this.game.width, this.game.height] }
-            , shaderResolution: { type: '2fv', value: [this.SIZE, this.SIZE] }
+            , shaderResolution: { type: '2fv', value: [this.SHADER_SIZE, this.SHADER_SIZE] }
             , iChannel0: { type: 'sampler2D', value: [] }
         }, require('../shaders/shadow.frag'));
-        this.shadowTexureShader.setResolution(this.SIZE, this.SIZE);
+        this.shadowTexureShader.setResolution(this.SHADER_SIZE, this.SHADER_SIZE);
 
         this.shadowCastShader = new Phaser.Filter(this.game, {
             lightColor: {type: '4fv', value: [1,1,1,1.0]}
             , gameResolution: { type: '2fv', value: [this.game.width, this.game.height] }
-            , shaderResolution: { type: '2fv', value: [this.SIZE, this.SIZE] }
+            , shaderResolution: { type: '2fv', value: [this.SHADER_SIZE, this.SHADER_SIZE] }
         }, require('../shaders/cast-shadow.frag'));
-        this.shadowCastShader.setResolution(this.SIZE, this.SIZE);
+        this.shadowCastShader.setResolution(this.SHADER_SIZE, this.SHADER_SIZE);
+
+        this.shadowBlurX = new Phaser.Filter(this.game, {
+            blur: {type: '1f', value: 0.5}
+            , shaderResolution: { type: '2fv', value: [this.SHADER_SIZE] }
+        }, require('../shaders/blur-x.frag'));
+
+        this.shadowBlurY = new Phaser.Filter(this.game, {
+            blur: {type: '1f', value: 0.5}
+            , shaderResolution: { type: '2fv', value: [this.SHADER_SIZE] }
+        }, require('../shaders/blur-y.frag'));
 
         this.renderTexure = new Phaser.RenderTexture(this.game, this.SIZE, this.SIZE);
 
@@ -43,8 +55,9 @@ class Light extends Sprite {
         //this.addChild(this.image);
         //this.image.filters = [this.shadowTexureShader];
 
-        this.lighting.filters = [this.shadowTexureShader];
+        //this.lighting.filters = [this.shadowTexureShader];
         //this.lighting.filters = [this.shadowTexureShader, this.shadowCastShader];
+        this.lighting.filters = [this.shadowTexureShader, this.shadowCastShader, this.shadowBlurX, this.shadowBlurY];
     }
 
     update() {
