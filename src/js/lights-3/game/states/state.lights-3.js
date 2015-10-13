@@ -70,18 +70,19 @@ class Lights2State extends Phaser.State {
         //this.renderGroup.add(this.floor.image);
         this.light = new Light(this.game);
 
+        this.shadowMapRT = this.game.make.renderTexture(this.SHADER_SIZE, this.SHADER_SIZE);
+        //this.shadowMapRT.renderRawXY(this.renderGroup, 0, 0, true);
+        this.shadowMapImage = this.game.add.image(0, 0, this.shadowMapRT);
+        this.shadowMapImage.filters = [this.shadowTexureShader];
+        //this.shadowMapImage.filters = [this.shadowTexureShader, this.shadowCastShader];
+
         this.lightingRT = this.game.make.renderTexture(this.game.width, this.game.height);
         this.lightingImage = this.game.add.image(0, 0, this.lightingRT);
         this.lightingImage.filters = [this.shadowCastShader];
 
-        this.shadowMapRT = this.game.make.renderTexture(this.game.width, this.game.width);
-        this.shadowMapImage = this.game.add.image(0, 0, this.shadowMapRT);
-        //this.shadowMapImage.filters = [this.shadowTexureShader];
-        this.shadowMapImage.filters = [this.shadowTexureShader, this.shadowCastShader];
-
         //this.shadowLightRT = this.game.make.renderTexture(this.game.width, this.game.height);
-        //this.shadowLightImage = this.game.make.sprite(0, 0, this.shadowLightRT);
-        //this.shadowLightImage.filters = [this.shadowCastShader];
+        //this.shadowLightImage = this.game.add.sprite(0, 0, this.shadowLightRT);
+        //this.shadowLightImage.filters = [this.shadowCastShader];h
 
         this.shadowTexureShader.uniforms.iChannel0.value = this.lightingRT;
         this.shadowCastShader.uniforms.iChannel0.value = this.shadowMapRT;
@@ -98,6 +99,10 @@ class Lights2State extends Phaser.State {
 
         this.shadowTexureShader.uniforms.uLightPosition.value = [this.light.x, this.light.y];
         this.shadowTexureShader.update();
+
+        this.shadowMapRT.dirty = true;
+
+        //this.shadowLightRT.render(this.shadowMapImage);
 
         this.shadowCastShader.uniforms.uLightPosition.value = [this.light.x, this.light.y];
         this.shadowCastShader.update();

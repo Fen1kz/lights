@@ -59,7 +59,8 @@ void main() {
 //    color.rg = abs(toLight);
 //    color.rg = samplePoint;
     color = LMapColor;
-    color.a = 0.5;
+    color = texture2D(iChannel0, vTextureCoord);
+    color.a = 0.75;
 
 //    color = texture2D(uSampler, realCoord);
 //    color.a = 1.0;
@@ -90,7 +91,5 @@ void main() {
 //        }
 //        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 //
-//    gl_FragColor = texture2D(uSampler, localToGlobal(realCoord));
-//        gl_FragColor.r = 1.0;
     gl_FragColor = color;
 }

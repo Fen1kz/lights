@@ -43,7 +43,7 @@ void main(void) {
             dst = min(dst, distance);
         }
     }
-    gl_FragColor = vec4(vec3(dst, 1.0 - dst, 0.0), 1.0 - dst);
+    gl_FragColor = vec4(vec3(0.0, 0.0, 0.0), dst);
 
 //    color.a = 1.0;
 
